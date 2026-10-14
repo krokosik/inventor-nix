@@ -41,7 +41,8 @@ if [ "$ready" != 1 ]; then
   exit 1
 fi
 
-wine_command "C:\Program Files (x86)\Common Files\Autodesk Shared\AdskLicensing\$INVENTOR_LICENSING_VERSION\AdskLicensingService\AdskLicensingService.exe" > "$logs/licensing-wine.log" 2>&1 &
+licensing_executable="C:\\Program Files (x86)\\Common Files\\Autodesk Shared\\AdskLicensing\\$INVENTOR_LICENSING_VERSION\\AdskLicensingService\\AdskLicensingService.exe"
+wine_command "$licensing_executable" > "$logs/licensing-wine.log" 2>&1 &
 licensing_pid=$!
 sleep 5
 if ! kill -0 "$licensing_pid" 2>/dev/null; then

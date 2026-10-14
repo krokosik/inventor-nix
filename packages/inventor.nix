@@ -103,6 +103,7 @@ let
             "syswow64"
           ];
     unshareInstall = { session, ... }: /* bash */ ''
+      set -euo pipefail
       tar --extract --file "$src" --directory "$WINEPREFIX" --no-same-owner
       app="$WINEPREFIX/drive_c/Program Files/Autodesk/Inventor 2026/Bin"
       components="$WINEPREFIX/drive_c/Program Files/Common Files/Autodesk Shared/Components/2026/${manifest.componentsVersion}"

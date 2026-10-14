@@ -2,7 +2,7 @@
   description = "Experimental Autodesk Inventor 2026 on Nix, using locally supplied Windows files";
 
   inputs = {
-    nix-overlayfs.url = "github:krokosik/nix-overlayfs/8ff690939b5946a631958361a9086df7879d73ce";
+    nix-overlayfs.url = "github:krokosik/nix-overlayfs/9342964a7344d93d75fdda0adcbbbba1a36994c7";
     nixpkgs.follows = "nix-overlayfs/nixpkgs";
   };
 
@@ -55,6 +55,20 @@
         })
       ];
       checks.${system} = {
+        prelaunch =
+          pkgs.runCommand "inventor-prelaunch-check"
+            {
+              nativeBuildInputs = [
+                pkgs.python3
+                pkgs.bash
+                pkgs.coreutils
+                pkgs.gnugrep
+              ];
+            }
+            /* bash */ ''
+              python3 ${./checks/test-prelaunch.py} ${./scripts/prelaunch.sh}
+              touch "$out"
+            '';
         importer =
           pkgs.runCommand "inventor-importer-check"
             {

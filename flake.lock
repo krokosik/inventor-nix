@@ -127,17 +127,17 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1791988003,
-        "narHash": "sha256-G3yX6QIQBYL+xr+vG3GORXZv71FBhH/tvMRNi4N0ZRA=",
+        "lastModified": 1791988698,
+        "narHash": "sha256-wnf55HOCAOCuTIQTpd9qJHwQycq/7Q88OftD8jqseOc=",
         "owner": "krokosik",
         "repo": "nix-overlayfs",
-        "rev": "8ff690939b5946a631958361a9086df7879d73ce",
+        "rev": "9342964a7344d93d75fdda0adcbbbba1a36994c7",
         "type": "github"
       },
       "original": {
         "owner": "krokosik",
         "repo": "nix-overlayfs",
-        "rev": "8ff690939b5946a631958361a9086df7879d73ce",
+        "rev": "9342964a7344d93d75fdda0adcbbbba1a36994c7",
         "type": "github"
       }
     },

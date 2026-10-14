@@ -11,8 +11,10 @@ databases are distributed here.
 ## STATUS
 
 This is a development prototype, not a confirmed working Inventor release.
-The importer is implemented and tested. End-to-end licensing and modelling
-with the imported build are still being investigated. See
+The importer, patched Wine and complete overlay package build successfully.
+Identity Manager and Licensing Service start, and Inventor enters its licensing
+workflow. The current blocker is missing product-registration metadata; account
+authentication and modelling remain unverified. See
 [docs/compatibility.md](docs/compatibility.md) for the actual validation record.
 
 The baseline is Wine 11.4 with a `Win32_TimeZone` WMI patch and DXVK 2.7.1.
@@ -97,9 +99,11 @@ NIX_OVERLAYFS_GRAPHICS_STACK=system \
   nix run "$HOME/.local/share/inventor-nix-imports/my-2026-install/package"
 ```
 
-First launch is intended to use a fresh Autodesk login. **Whether licensing
-can be fully initialized without importing existing Windows licensing state
-is an open compatibility question.** No cached activation is assumed.
+First launch is intended to use a fresh Autodesk login. The currently tested
+snapshot stops at licensing because the service has no registered feature for
+product `797R1`, version `2026.0.0.F`. Reconstructing that product registration
+from appropriate installation metadata is the next milestone. No cached
+activation is assumed or imported.
 
 Runtime files live under `$XDG_DATA_HOME/inventor-2026` (default
 `~/.local/share/inventor-2026`), with logs under `.nix-overlayfs/logs`.
@@ -122,16 +126,20 @@ nix build . \
 ```
 
 The public input currently pins [our fork](https://github.com/krokosik/nix-overlayfs),
-which adds Wine 11.4's missing Mono bootstrap selection and a regression check.
+which adds Wine 11.4's missing Mono bootstrap selection and a regression check,
+and fixes permission normalization walking kernel overlayfs' private workdir.
 
 ```bash
 nix fmt .
 nix flake check
 nix develop --command shellcheck --shell=bash scripts/prelaunch.sh scripts/oauth.sh
+nix run .#wine-probe
 ```
 
-`nix flake check` validates the importer without proprietary inputs. It does
-not establish successful Autodesk authentication or application operation.
+`nix flake check` validates the importer, service orchestration and OAuth
+callback with synthetic inputs. `wine-probe` checks three WMI classes in a
+disposable Wine prefix without proprietary files. Neither command establishes
+successful Autodesk authentication or application operation.
 Bit-for-bit reproducibility of Wine-generated layers also remains to be
 checked with independent clean builds.
 
